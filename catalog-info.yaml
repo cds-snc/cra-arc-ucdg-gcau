@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "cra-arc-ucdg-gcau"
+spec:
+  type: website
+  owner: "group:cds-snc/digital-transformation-office"
+  lifecycle: experimental
