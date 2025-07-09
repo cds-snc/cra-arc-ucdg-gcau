@@ -1,0 +1,50 @@
+name: "Terraform plan dev/staging"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "terragrunt/**"
+      - ".github/workflows/tf_plan.yml"
+
+env:
+  AWS_REGION: ca-central-1
+  TERRAFORM_VERSION: 1.9.4
+  TERRAGRUNT_VERSION: 0.66.8 #where do you find the latest versions for these?
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  terragrunt-plan:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - module: terragrunt/env/dev
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: setup terraform tools
+        uses: cds-snc/terraform-tools-setup@v1
+
+      - name: configure aws credentials using OIDC role
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          role-to-assume: arn:aws:iam::211125499457:role/GitHubAction-AssumeRoleWithAction #might have to make a new role?
+          role-session-name: TFPlan
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform plan
+        uses: cds-snc/terraform-plan@v3
+        with:
+          comment-delete: true
+          comment-title: "Dev: ${{ matrix.module }}"
+          directory: ${{ matrix.module }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          terragrunt: true
