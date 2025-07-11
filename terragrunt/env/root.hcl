@@ -20,7 +20,6 @@ inputs = {
   env               = local.env_vars.inputs.env
   product_name      = local.env_vars.inputs.product_name
   region            = local.env_vars.inputs.region
-  stage_name        = local.env_vars.inputs.stage_name
 }
 
 

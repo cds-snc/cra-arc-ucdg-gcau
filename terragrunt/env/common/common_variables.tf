@@ -42,8 +42,3 @@ variable "region" {
   description = "The current AWS region"
   type        = string
 }
-
-variable "stage_name" {
-  description = "The stage name for the Trustregistry API Gateway."
-  type        = string
-}
