@@ -1,4 +1,4 @@
-.PHONY: fmt checkov
+.PHONY: fmt checkov plan validate
 
 fmt:
 	terraform fmt -recursive aws &&\
@@ -6,3 +6,9 @@ fmt:
 
 checkov:
 	checkov --directory=aws
+
+plan:
+	terragrunt run-all plan
+
+validate:
+	terragrunt run-all validate
