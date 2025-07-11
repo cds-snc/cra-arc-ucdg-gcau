@@ -4,10 +4,10 @@
 # to set an environment's global varialbes.
 #
 locals {
-  billing_code     = "${local.env_vars.inputs.product_name}-${local.env_vars.inputs.env}"
-  env_vars         = read_terragrunt_config("./env_vars.hcl")
-  domain_name      = local.env_vars.inputs.domain_name  # cra-arc.alpha.canada.ca
-  subdomain_name = "design.${local.domain_name}" # design.cra-arc.alpha.canada.ca
+  billing_code   = "${local.env_vars.inputs.product_name}-${local.env_vars.inputs.env}"
+  env_vars       = read_terragrunt_config("./env_vars.hcl")
+  domain_name    = local.env_vars.inputs.domain_name # cra-arc.alpha.canada.ca
+  subdomain_name = "design.${local.domain_name}"     # design.cra-arc.alpha.canada.ca
 }
 
 
@@ -16,7 +16,7 @@ inputs = {
   billing_code      = local.billing_code
   billing_tag_value = local.billing_code
   domain_name       = local.env_vars.inputs.domain_name
-  subdomain_name  = local.subdomain_name
+  subdomain_name    = local.subdomain_name
   env               = local.env_vars.inputs.env
   product_name      = local.env_vars.inputs.product_name
   region            = local.env_vars.inputs.region
