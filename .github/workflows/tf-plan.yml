@@ -1,4 +1,4 @@
-name: "Terraform plan dev/staging"
+name: "Terraform plan staging"
 
 on:
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - module: terragrunt/env/dev
+          - module: terragrunt/env/staging
 
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: configure aws credentials using OIDC role
         uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
-          role-to-assume: arn:aws:iam::211125499457:role/GitHubAction-AssumeRoleWithAction #might have to make a new role?
+          role-to-assume: arn:aws:iam::211125499457:role/cra-arc-ucdg-gcau-plan
           role-session-name: TFPlan
           aws-region: ${{ env.AWS_REGION }}
 
@@ -44,7 +44,7 @@ jobs:
         uses: cds-snc/terraform-plan@v3
         with:
           comment-delete: true
-          comment-title: "Dev: ${{ matrix.module }}"
+          comment-title: "Staging: ${{ matrix.module }}"
           directory: ${{ matrix.module }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           terragrunt: true
