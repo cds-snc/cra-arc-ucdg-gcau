@@ -6,8 +6,7 @@ module "website" {
   force_destroy_s3_bucket = true
   index_document          = "index.html"
   single_page_app         = false
-  hosted_zone_id          = aws_route53_zone.main_hosted_zone.zone_id
-  is_create_hosted_zone   = false
+  is_create_hosted_zone   = true
 
 
 
@@ -17,4 +16,3 @@ module "website" {
     aws.us-east-1 = aws.us-east-1
   }
 }
-
