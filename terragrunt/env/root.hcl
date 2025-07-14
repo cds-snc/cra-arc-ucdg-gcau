@@ -7,7 +7,7 @@ locals {
   billing_code   = "${local.env_vars.inputs.product_name}-${local.env_vars.inputs.env}"
   env_vars       = read_terragrunt_config("./env_vars.hcl")
   domain_name    = local.env_vars.inputs.domain_name # cra-arc.alpha.canada.ca
-  subdomain_name = "design.${local.domain_name}"     # design.cra-arc.alpha.canada.ca
+  subdomain_name = "design-test.${local.domain_name}" # design-test.cra-arc.alpha.canada.ca
 }
 
 
