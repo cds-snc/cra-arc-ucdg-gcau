@@ -1,0 +1,46 @@
+name: "Terraform apply staging"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "terragrunt/**"
+      - ".github/workflows/tf_apply.yml"
+
+env:
+  AWS_REGION: ca-central-1
+  TERRAFORM_VERSION: 1.9.4
+  TERRAGRUNT_VERSION: 0.66.8 #where do you find the latest versions for these?
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terragrunt-apply:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - module: terragrunt/env/staging
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: setup terraform tools
+        uses: cds-snc/terraform-tools-setup@v1
+
+      - name: configure aws credentials using OIDC role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::211125499457:role/cra-arc-ucdg-gcau-apply
+          role-session-name: TFApply
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terragrunt apply
+        working-directory: ${{ matrix.module }}
+        run: terragrunt apply --terragrunt-non-interactive -auto-approve
