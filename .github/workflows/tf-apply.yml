@@ -44,3 +44,15 @@ jobs:
       - name: Terragrunt apply
         working-directory: ${{ matrix.module }}
         run: terragrunt apply --terragrunt-non-interactive -auto-approve
+
+      - name: Capture Terragrunt Outputs for Static Website
+        working-directory: ${{ matrix.module }}
+        run: |
+          echo "STATIC_WEBSITE_S3_BUCKET_NAME=$(terragrunt output -raw s3_bucket_name)" >> $GITHUB_ENV
+          echo "STATIC_WEBSITE_CLOUDFRONT_DISTRIBUTION_ID=$(terragrunt output -raw cloudfront_distribution_id)" >> $GITHUB_ENV
+
+      - name: Sync Website Files to S3
+        run: aws s3 sync static-content/ s3://${{ env.STATIC_WEBSITE_S3_BUCKET_NAME }} --delete
+
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ env.STATIC_WEBSITE_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
