@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "terragrunt/**"
-      - ".github/workflows/tf_apply.yml"
+      - ".github/workflows/tf-apply.yml"
       - "static-content/**"
 
 env:
