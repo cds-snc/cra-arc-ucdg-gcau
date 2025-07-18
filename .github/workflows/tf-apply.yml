@@ -49,7 +49,7 @@ jobs:
       - name: Capture Terragrunt Outputs for Static Website
         working-directory: ${{ matrix.module }}
         run: |
-          echo "STATIC_WEBSITE_S3_BUCKET_NAME=$(terragrunt output -raw s3_bucket_name)" >> $GITHUB_ENV
+          echo "STATIC_WEBSITE_S3_BUCKET_NAME=$(terragrunt output -raw s3_bucket_id)" >> $GITHUB_ENV
           echo "STATIC_WEBSITE_CLOUDFRONT_DISTRIBUTION_ID=$(terragrunt output -raw cloudfront_distribution_id)" >> $GITHUB_ENV
 
       - name: Sync Website Files to S3
