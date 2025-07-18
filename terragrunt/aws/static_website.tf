@@ -1,5 +1,5 @@
 module "website" {
-  source                  = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v10.0.0"
+  source                  = "github.com/cds-snc/terraform-modules//simple_static_website?ref=v10.6.2"
   domain_name_source      = var.subdomain_name
   billing_tag_value       = var.billing_code
   s3_bucket_name          = "cra-arc-ucdg-gcau-static-website-${var.env}"
